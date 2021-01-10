@@ -1,0 +1,6 @@
+type Quiz @model {
+  id: ID!
+  question: String!
+  rightAnswer: String
+  wrongAnswers: [String]
+}
