@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, reactive } from '@nuxtjs/composition-api'
 import { API, graphqlOperation } from 'aws-amplify'
 import { listQuizs } from '@/src/graphql/queries'
 
@@ -43,14 +43,20 @@ export default defineComponent({
       try {
         // TODO ここ型定義する
         const quiz: any = await API.graphql(graphqlOperation(listQuizs))
-        state.question = quiz.question
-        state.rightAnswer = quiz.rightAnswer
-        state.wrongAnswer = quiz.wrongAnswers[0]
-        state.wrongAnswer2 = quiz.wrongAnswers[1]
+        const data = quiz.data.listQuizs.items
+        console.debug(data)
+        // TODO アンサーを配列に詰め直してシャッフルする
+        state.question = data[0].question
+        state.rightAnswer = data[0].rightAnswer
+        state.wrongAnswer = data[0].wrongAnswers[0]
+        state.wrongAnswer2 = data[0].wrongAnswers[1]
       } catch (error) {
         console.error(error)
       }
     }
+    onMounted(() => {
+      outputQuestions()
+    })
     return {
       outputQuestions,
       state,
