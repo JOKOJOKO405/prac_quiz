@@ -10,7 +10,7 @@
       class="mb-3"
     >
       <v-btn
-        class="pa-6"
+        class="pa-6 text-capitalize"
         :color="state.colors[index]"
         block
         @click.prevent="checkAnswer($event)"
@@ -80,11 +80,8 @@ export default defineComponent({
       state.isCorrect = true
       console.debug(state.rightAnswer)
       const data = event.target.innerText
-      // TODO innerTextすると英文字がなぜかすべてtoUppercaseに
-      const capitalizedData =
-        data.charAt(0).toUpperCase() + data.slice(1).toLowerCase()
-      console.debug(capitalizedData)
-      if (capitalizedData === state.rightAnswer) {
+      console.debug(data)
+      if (data === state.rightAnswer) {
         state.judgement = '正解'
       } else {
         state.judgement = '不正解'
