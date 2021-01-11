@@ -10,7 +10,7 @@
       class="mb-3"
     >
       <v-btn
-        class="pa-6 text-capitalize"
+        class="pa-6 text-capitalize font-weight-bold"
         :color="state.colors[index]"
         block
         @click.prevent="checkAnswer($event)"
