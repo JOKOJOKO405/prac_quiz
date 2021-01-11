@@ -49,7 +49,6 @@ export default defineComponent({
         rightAnswer: state.rightAnswer,
         wrongAnswers: [state.wrongAnswer, state.wrongAnswer2],
       }
-      console.debug(questions)
       try {
         const data = await API.graphql(
           graphqlOperation(createQuiz, { input: questions })
@@ -58,6 +57,10 @@ export default defineComponent({
       } catch (e) {
         console.error(e)
       }
+      state.question = ''
+      state.rightAnswer = ''
+      state.wrongAnswer = ''
+      state.wrongAnswer2 = ''
     }
 
     return {
