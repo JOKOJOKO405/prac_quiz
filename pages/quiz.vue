@@ -64,6 +64,7 @@ export default defineComponent({
         state.rightAnswer = data[index].rightAnswer
         state.wrongAnswer = data[index].wrongAnswers[0]
         state.wrongAnswer2 = data[index].wrongAnswers[1]
+        // TODO これをシャッフルしたい
         state.allAnswers.push(
           state.rightAnswer,
           state.wrongAnswer,
@@ -78,13 +79,27 @@ export default defineComponent({
     const checkAnswer = (event: any) => {
       state.isCorrect = true
       console.debug(state.rightAnswer)
-      const text = event.target.innerText
-      console.debug(text)
-      if (text === state.rightAnswer) {
+      const data = event.target.innerText
+      // TODO innerTextすると英文字がなぜかすべてtoUppercaseに
+      const capitalizedData =
+        data.charAt(0).toUpperCase() + data.slice(1).toLowerCase()
+      console.debug(capitalizedData)
+      if (capitalizedData === state.rightAnswer) {
         state.judgement = '正解'
       } else {
         state.judgement = '不正解'
       }
+
+      setTimeout(() => {
+        refresh()
+        outputQuestions()
+      }, 1000)
+    }
+
+    const refresh = () => {
+      state.allAnswers = []
+      state.question = ''
+      state.isCorrect = false
     }
 
     // TODO anyの型定義
