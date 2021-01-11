@@ -9,9 +9,17 @@
       cols="12"
       class="mb-3"
     >
-      <v-btn :color="state.colors[index]" block class="pa-6">
+      <v-btn
+        class="pa-6"
+        :color="state.colors[index]"
+        block
+        @click.prevent="checkAnswer($event)"
+      >
         {{ answer }}
       </v-btn>
+    </v-col>
+    <v-col v-if="state.isCorrect">
+      {{ state.judgement }}
     </v-col>
   </v-row>
 </template>
@@ -28,6 +36,8 @@ type QandA = {
   wrongAnswer2: string
   allAnswers: string[]
   colors: string[]
+  judgement: string
+  isCorrect: boolean
 }
 export default defineComponent({
   setup() {
@@ -38,6 +48,8 @@ export default defineComponent({
       wrongAnswer2: '',
       allAnswers: [],
       colors: ['primary', 'secondary', 'accent'],
+      judgement: '',
+      isCorrect: false,
     })
     const outputQuestions = async () => {
       try {
@@ -45,11 +57,13 @@ export default defineComponent({
         const quiz: any = await API.graphql(graphqlOperation(listQuizs))
         const data = quiz.data.listQuizs.items
         console.debug(data)
-        state.question = data[0].question
+
+        const index = shuffleQuestion(data)
+        state.question = data[index].question
         // TODO アンサーを配列に詰め直してシャッフルする
-        state.rightAnswer = data[0].rightAnswer
-        state.wrongAnswer = data[0].wrongAnswers[0]
-        state.wrongAnswer2 = data[0].wrongAnswers[1]
+        state.rightAnswer = data[index].rightAnswer
+        state.wrongAnswer = data[index].wrongAnswers[0]
+        state.wrongAnswer2 = data[index].wrongAnswers[1]
         state.allAnswers.push(
           state.rightAnswer,
           state.wrongAnswer,
@@ -60,11 +74,31 @@ export default defineComponent({
         console.error(error)
       }
     }
+
+    const checkAnswer = (event: any) => {
+      state.isCorrect = true
+      console.debug(state.rightAnswer)
+      const text = event.target.innerText
+      console.debug(text)
+      if (text === state.rightAnswer) {
+        state.judgement = '正解'
+      } else {
+        state.judgement = '不正解'
+      }
+    }
+
+    // TODO anyの型定義
+    const shuffleQuestion = (data: any) => {
+      const randIndex = Math.floor(Math.random() * data.length)
+      return randIndex
+    }
+
     onMounted(() => {
       outputQuestions()
     })
     return {
       outputQuestions,
+      checkAnswer,
       state,
     }
   },
