@@ -99,6 +99,7 @@ export default defineComponent({
       state.isCorrect = false
     }
 
+    // シャッフルするためのインデックス番号取得
     // TODO anyの型定義
     const shuffleQuestion = (data: any) => {
       const randIndex = Math.floor(Math.random() * data.length)
