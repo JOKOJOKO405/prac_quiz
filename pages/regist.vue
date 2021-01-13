@@ -34,7 +34,7 @@ type QandA = {
 }
 
 export default defineComponent({
-  setup(_, { root }) {
+  setup() {
     const state = reactive<QandA>({
       user: '',
       question: '',
