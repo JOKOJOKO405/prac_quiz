@@ -4,5 +4,5 @@ declare interface listQuizs {
   wrongAnswers: string[]
 }
 declare interface items {
-  items: listQuizs
+  items: items
 }
