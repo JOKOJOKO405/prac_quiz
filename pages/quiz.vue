@@ -32,8 +32,6 @@ import { listQuizs } from '@/src/graphql/queries'
 type QandA = {
   question: string
   rightAnswer: string
-  wrongAnswer: string
-  wrongAnswer2: string
   allAnswers: string[]
   colors: string[]
   judgement: string
@@ -44,8 +42,6 @@ export default defineComponent({
     const state = reactive<QandA>({
       question: '',
       rightAnswer: '',
-      wrongAnswer: '',
-      wrongAnswer2: '',
       allAnswers: [],
       colors: ['primary', 'secondary', 'accent'],
       judgement: '',
@@ -60,16 +56,18 @@ export default defineComponent({
 
         const index = shuffleQuestion(data)
         state.question = data[index].question
-        // TODO アンサーを配列に詰め直してシャッフルする
         state.rightAnswer = data[index].rightAnswer
-        state.wrongAnswer = data[index].wrongAnswers[0]
-        state.wrongAnswer2 = data[index].wrongAnswers[1]
-        // TODO これをシャッフルしたい
-        state.allAnswers.push(
-          state.rightAnswer,
-          state.wrongAnswer,
-          state.wrongAnswer2
-        )
+        state.allAnswers.push(state.rightAnswer, ...data[index].wrongAnswers)
+        console.debug('こたえ' + state.allAnswers)
+
+        for (let i = state.allAnswers.length - 1; i >= 0; i--) {
+          const randomNumber = Math.floor(Math.random() * (i + 1))
+          ;[state.allAnswers[i], state.allAnswers[randomNumber]] = [
+            state.allAnswers[randomNumber],
+            state.allAnswers[i],
+          ]
+        }
+
         console.debug(state.allAnswers)
       } catch (error) {
         console.error(error)
