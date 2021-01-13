@@ -26,8 +26,6 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive } from '@nuxtjs/composition-api'
-import { API, graphqlOperation } from 'aws-amplify'
-import { listQuizs } from '@/src/graphql/queries'
 
 type QandA = {
   question: string
@@ -38,7 +36,7 @@ type QandA = {
   isCorrect: boolean
 }
 export default defineComponent({
-  setup() {
+  setup(_, { root }) {
     const state = reactive<QandA>({
       question: '',
       rightAnswer: '',
@@ -50,7 +48,7 @@ export default defineComponent({
     const outputQuestions = async () => {
       try {
         // TODO ここ型定義する
-        const quiz: any = await API.graphql(graphqlOperation(listQuizs))
+        const quiz = await root.$API.getlistQuizs()
         const data = quiz.data.listQuizs.items
         console.debug(data)
 
