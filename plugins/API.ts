@@ -17,7 +17,7 @@ declare module '@nuxt/types' {
 
 // Apisの型
 interface Apis {
-  listQuizs: typeof listQuizs
+  getlistQuizs: typeof listQuizs
 }
 
 export default defineNuxtPlugin((_, inject) => {
@@ -31,6 +31,6 @@ export default defineNuxtPlugin((_, inject) => {
     }
   }
   inject('API', {
-    listQuizs: () => client(listQuizs),
+    getlistQuizs: () => client(listQuizs),
   })
 })
