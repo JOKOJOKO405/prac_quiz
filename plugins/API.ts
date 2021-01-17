@@ -1,5 +1,5 @@
 import { defineNuxtPlugin } from '@nuxtjs/composition-api'
-import { listQuizs } from '@/appsync/queries'
+import { getlistQuizs } from '@/appsync/queries'
 
 // 各インスタンスにタイプを定義
 // TODO これなに？
@@ -17,7 +17,7 @@ declare module '@nuxt/types' {
 
 // Apisの型
 interface Apis {
-  getlistQuizs: typeof listQuizs
+  listQuizs: typeof getlistQuizs
 }
 
 export default defineNuxtPlugin((_, inject) => {
@@ -31,6 +31,6 @@ export default defineNuxtPlugin((_, inject) => {
     }
   }
   inject('API', {
-    getlistQuizs: () => client(listQuizs),
+    listQuizs: () => client(getlistQuizs),
   })
 })
