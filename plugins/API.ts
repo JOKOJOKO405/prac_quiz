@@ -21,10 +21,9 @@ interface Apis {
 }
 
 export default defineNuxtPlugin((_, inject) => {
-  const client = async (func: (arg?: any) => Promise<any>, arg?: any) => {
+  const client = async (func: (arg?: any) => Promise<any>) => {
     try {
-      const data = arg ? await func(arg) : await func()
-      return data
+      return await func()
     } catch (e) {
       console.error(e)
       throw e
