@@ -3,6 +3,6 @@ declare interface listQuizs {
   rightAnswer: string
   wrongAnswers: string[]
 }
-declare interface items {
-  items: items
+declare interface listQuizs {
+  listQuizs: any
 }
