@@ -47,27 +47,6 @@ export default defineComponent({
       judgement: '',
       isCorrect: false,
     })
-    const outputQuestions = async () => {
-      try {
-        // const index = shuffleQuestion(data)
-        // state.question = data[index].question
-        // state.rightAnswer = data[index].rightAnswer
-        // state.allAnswers.push(state.rightAnswer, ...data[index].wrongAnswers)
-        // console.debug('こたえ' + state.allAnswers)
-
-        // for (let i = state.allAnswers.length - 1; i >= 0; i--) {
-        //   const randomNumber = Math.floor(Math.random() * (i + 1))
-        //   ;[state.allAnswers[i], state.allAnswers[randomNumber]] = [
-        //     state.allAnswers[randomNumber],
-        //     state.allAnswers[i],
-        //   ]
-        // }
-        // TODO awaitあとで直す
-        await console.debug(state.allAnswers)
-      } catch (error) {
-        console.error(error)
-      }
-    }
 
     const checkAnswer = (event: any) => {
       state.isCorrect = true
@@ -99,13 +78,30 @@ export default defineComponent({
       return randIndex
     }
 
-    const { $fetch } = useFetch(async () => {
+    const outputQuestions = async () => {
       try {
         const quiz = await root.$API.listQuizs()
         console.debug(quiz)
+        const index = shuffleQuestion(quiz)
+        state.question = quiz[index].question
+        state.rightAnswer = quiz[index].rightAnswer
+        state.allAnswers.push(state.rightAnswer, ...quiz[index].wrongAnswers)
+        console.debug('こたえ' + state.allAnswers)
+
+        for (let i = state.allAnswers.length - 1; i >= 0; i--) {
+          const randomNumber = Math.floor(Math.random() * (i + 1))
+          ;[state.allAnswers[i], state.allAnswers[randomNumber]] = [
+            state.allAnswers[randomNumber],
+            state.allAnswers[i],
+          ]
+        }
       } catch (e) {
         console.error(e)
       }
+    }
+
+    const { fetch } = useFetch(async () => {
+      await outputQuestions()
     })
 
     return {
