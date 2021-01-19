@@ -4,10 +4,10 @@ import { listQuizs } from '~/src/graphql/queries'
 
 // クイズの取得
 // 同じクエリ名だとエラーになる
-export const getlistQuizs = async () => {
+export const listQuizsGql = async () => {
   const { data } = (await API.graphql(
     graphqlOperation(listQuizs)
-  )) as GraphQLResult<items>
+  )) as GraphQLResult<listQuizs>
   if (!data) throw new Error('データがありません')
-  return data.items
+  return data.listQuizs.items
 }
